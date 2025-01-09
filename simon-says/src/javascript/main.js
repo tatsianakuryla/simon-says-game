@@ -278,7 +278,8 @@ function renderVirtualKeyboard(inputChecked = 'easy') {
         'flex',
     ]);
 
-    if (inputChecked === 'easy') virtualKeyboardInner.append(getKeyboard(DIGITS));
+    if (inputChecked === 'easy')
+        virtualKeyboardInner.append(getKeyboard(DIGITS));
     else if (inputChecked === 'medium')
         virtualKeyboardInner.append(getKeyboard(LETTERS));
     else if (inputChecked === 'hard')
@@ -296,10 +297,16 @@ function renderStarGameWindow() {
 }
 renderStarGameWindow();
 
-Array.from(document.getElementsByClassName('game__lvl-label')).forEach((label) => {
-    label.addEventListener('click', () => {
-        const labelFor = label.getAttribute('for');
+Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
+    (label) => {
+        label.addEventListener('click', () => {
+            const labelFor = label.getAttribute('for');
 
-        renderVirtualKeyboard(labelFor);
-    })
-})
+            renderVirtualKeyboard(labelFor);
+        });
+    }
+);
+
+//start
+
+
