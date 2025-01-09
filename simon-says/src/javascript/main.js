@@ -20,15 +20,22 @@ function getMain() {
     const heading = createElementWithClass('h1', ['game__heading']);
     heading.innerText = 'Simon Says game';
 
-    const lvlHeading = createElementWithClass('h2', ['game__lvl-heading']);
-    lvlHeading.innerText = 'Select difficulty level';
-
     const virtualKeyboard = createElementWithClass('div', [
         'game__virtual-keyboard',
     ]);
     virtualKeyboard.id = 'game__virtual-keyboard';
 
-    gameSectionContainer.append(heading, lvlHeading, virtualKeyboard);
+    const btnWrapper = createElementWithClass('div', [
+        'game__btn-wrapper',
+        'flex',
+    ]);
+    btnWrapper.id = 'game__btn-wrapper';
+
+    gameSectionContainer.append(
+        heading,
+        virtualKeyboard,
+        btnWrapper
+    );
     main.append(gameSection);
 
     return main;
@@ -43,11 +50,14 @@ function getLevelSection() {
         'flex',
     ]);
 
+    const lvlHeading = createElementWithClass('span', ['game__lvl-heading']);
+    lvlHeading.innerText = 'Select difficulty level:';
+
     const lvlInputs = LEVELS.map((level) => {
         return getRadioInput(level);
     });
 
-    lvlFieldset.append(...lvlInputs);
+    lvlFieldset.append(lvlHeading, ...lvlInputs);
     return lvlFieldset;
 }
 
@@ -85,13 +95,17 @@ function getRadioInput(level) {
 }
 
 function getButton(action) {
+    const btnWrapper = document.getElementById('game__btn-wrapper');
+    btnWrapper.innerHTML = '';
+
     const btn = createElementWithClass('button', [
         'game__btn',
         `game__btn_${action}`,
     ]);
     btn.innerText = `${action.charAt(0).toUpperCase()}${action.substr(1)}`;
+    btnWrapper.append(btn);
 
-    return btn;
+    return btnWrapper;
 }
 
 const LETTERS = [
@@ -308,5 +322,3 @@ Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
 );
 
 //start
-
-

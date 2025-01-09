@@ -88,6 +88,7 @@ body {
 
 .game__heading {
     margin: 0;
+    margin-bottom: 20px;
     padding: 0;
     font-size: 2rem;
     text-align: center;
@@ -100,10 +101,12 @@ body {
 }
 
 .game__lvl-fieldset {
+    align-items: center;
     gap: 10px;
     margin: 0;
     padding: 0;
     border: none;
+    width: 100%;
 }
 
 .game__lvl-label {
@@ -133,6 +136,11 @@ body {
 .game__lvl-input {
     height: 0.1px;
     width: 0.1px;
+}
+
+.game__btn-wrapper {
+    justify-content: center;
+    width: 100%;
 }
 
 .game__btn {
