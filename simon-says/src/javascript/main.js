@@ -96,13 +96,16 @@ function getRadioInput(level) {
 
 function getButton(action) {
     const btnWrapper = document.getElementById('game__btn-wrapper');
-    btnWrapper.innerHTML = '';
 
     const btn = createElementWithClass('button', [
         'game__btn',
         `game__btn_${action}`,
     ]);
+    btn.id = `game__btn_${action}`;
     btn.innerText = `${action.charAt(0).toUpperCase()}${action.substr(1)}`;
+    if(action === 'sequence') {
+        btn.innerText = 'Repeat the sequence';
+    }
     btnWrapper.append(btn);
 
     return btnWrapper;
@@ -311,14 +314,61 @@ function renderStarGameWindow() {
 }
 renderStarGameWindow();
 
+let checkedInput = 'easy';
+
 Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
     (label) => {
         label.addEventListener('click', () => {
             const labelFor = label.getAttribute('for');
-
+            checkedInput = labelFor;
             renderVirtualKeyboard(labelFor);
         });
     }
 );
 
 //start
+function makeHidden(element) {
+    element.classList.add('hidden');
+}
+
+function makeVisible(element) {
+    element.classList.remove('hidden');
+}
+
+function makeDifficultyInputsHidden() {
+    Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
+        (label) => {
+            const labelFor = label.getAttribute('for');
+            if(checkedInput !== labelFor) {
+                makeHidden(label);
+            }
+        });   
+}
+
+let roundCounter = 1;
+let userInputValue = '';
+function getRoundCounter(roundCounter) {
+    const counter = createElementWithClass('p', ['game__round-counter']);
+    counter.innerText = `Round ${roundCounter} of 5`;
+
+    return counter;
+}
+
+function getUserInput() {
+    const userInput = createElementWithClass('input', ['game__user-input']);
+    userInput.id = 'game__user-input';
+    userInput.value = userInputValue;
+
+    return userInput;
+}
+const startButton = document.getElementById('game__btn_start');
+startButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    makeDifficultyInputsHidden();
+    makeHidden(startButton);
+    getButton('sequence');
+    getButton('next');
+    document.getElementById('game__btn-wrapper').classList.add('game__btn-wrapper_two');
+    document.getElementById('game__btn-wrapper').after(getUserInput(), getRoundCounter(roundCounter));
+    document.getElementById('game__btn_sequence').setAttribute('disabled', '');
+})

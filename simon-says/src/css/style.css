@@ -66,7 +66,7 @@ body {
 
 .flex {
     display: flex;
-    gap: 20px;
+    gap: 15px;
 }
 
 .hidden {
@@ -76,7 +76,6 @@ body {
 .container {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     margin: 0 auto;
     padding: 20px 40px;
     max-width: 820px;
@@ -96,8 +95,9 @@ body {
 
 .game__lvl-heading {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 400;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-style: italic;
 }
 
 .game__lvl-fieldset {
@@ -143,6 +143,10 @@ body {
     width: 100%;
 }
 
+.game__btn-wrapper_two {
+    justify-content: space-around;
+}
+
 .game__btn {
     padding: 15px 30px;
     border: 3px solid transparent;
@@ -163,6 +167,12 @@ body {
 .game__btn:active {
     transform: scale(0.95);
     background-color: #3e8e41;
+}
+
+.game__btn:disabled {
+    background-color: #e0e0e0;
+    transform: scale(1);
+    pointer-events: none;
 }
 
 .game__keyboard-wrapper {
@@ -208,4 +218,16 @@ body {
 .game__keyboard-item:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.game__round-counter {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.game__user-input {
+    margin: 0;
+    padding: 5px;
+    border-radius: 10px;
 }
