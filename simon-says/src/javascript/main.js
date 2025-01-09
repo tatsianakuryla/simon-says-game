@@ -271,11 +271,20 @@ function getKeyboard(array) {
 
 function renderVirtualKeyboard(inputChecked = 'easy') {
     const virtualKeyboard = document.getElementById('game__virtual-keyboard');
-    if (inputChecked === 'easy') virtualKeyboard.append(getKeyboard(DIGITS));
+    virtualKeyboard.innerHTML = '';
+
+    const virtualKeyboardInner = createElementWithClass('div', [
+        'game__virtual-keyboard-inner',
+        'flex',
+    ]);
+
+    if (inputChecked === 'easy') virtualKeyboardInner.append(getKeyboard(DIGITS));
     else if (inputChecked === 'medium')
-        virtualKeyboard.append(getKeyboard(LETTERS));
+        virtualKeyboardInner.append(getKeyboard(LETTERS));
     else if (inputChecked === 'hard')
-        virtualKeyboard.append(getKeyboard([...LETTERS, ...DIGITS]));
+        virtualKeyboardInner.append(getKeyboard([...LETTERS, ...DIGITS]));
+
+    virtualKeyboard.append(virtualKeyboardInner);
 
     return virtualKeyboard;
 }
@@ -287,3 +296,10 @@ function renderStarGameWindow() {
 }
 renderStarGameWindow();
 
+Array.from(document.getElementsByClassName('game__lvl-label')).forEach((label) => {
+    label.addEventListener('click', () => {
+        const labelFor = label.getAttribute('for');
+
+        renderVirtualKeyboard(labelFor);
+    })
+})

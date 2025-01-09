@@ -161,6 +161,12 @@ body {
     max-width: 460px;
 }
 
+.game__virtual-keyboard-inner {
+    min-height: 410px;
+    justify-content: center;
+    align-items: center;
+}
+
 .game__keyboard-item {
     border-radius: 10px;
     border: none;
