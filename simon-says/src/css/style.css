@@ -1,0 +1,153 @@
+@font-face {
+    font-family: "Roboto";
+    src: local("Roboto"),
+        url("../fonts/roboto-regular.woff2") format("woff2"),
+        url("../fonts/roboto-regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: local("Roboto"),
+        url("../fonts/roboto-medium.woff2") format("woff2"),
+        url("../fonts/roboto-medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: local("Roboto"),
+        url("../fonts/roboto-bold.woff2") format("woff2"),
+        url("../fonts/roboto-bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --main-background: #f4f4f4;
+    --text-btn-headings: #fff;
+    --subheadings: #333;
+    --text: #555;
+    
+    --keyboard-background: #e0e0e0;
+    --key-active: #2196f3;
+    --start-btn: #00ffa1;
+    --new-game-btn: #f44336;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+    box-sizing: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+}
+
+.flex {
+    display: flex;
+    gap: 10px;
+}
+
+.container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 20px 40px;
+    max-width: 820px;
+    height: 100vh;
+    border-radius: 24px;
+    background-color: var(--main-background);
+}
+
+.game__heading {
+    margin: 0;
+    margin-bottom: 40px;
+    padding: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.game__lvl-heading {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.game__lvl-fieldset {
+    margin: 0;
+    padding: 20px 20px;
+    border: none;
+}
+
+.game__lvl-label {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+.game__lvl-label:hover {
+    background: linear-gradient(135deg, #45a049, #66bb6a);
+    transform: scale(1.05);
+  }
+  
+.game__lvl-input:checked+.game__lvl-label {
+    background: linear-gradient(135deg, #3e8e41, #558b2f);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.game__lvl-input {
+    height: 0.1px;
+    width: 0.1px;
+}
+
+.game__btn {
+    padding: 15px 30px;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    background-color: var(--start-btn, #4caf50);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+  
+.game__btn:hover {
+    border-color: white;
+    transform: scale(1.1);
+}
+  
+.game__btn:active {
+    transform: scale(0.95);
+    background-color: #3e8e41;
+}
