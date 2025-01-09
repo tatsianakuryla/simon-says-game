@@ -66,7 +66,7 @@ body {
 
 .flex {
     display: flex;
-    gap: 10px;
+    gap: 30px;
 }
 
 .container {
@@ -83,7 +83,6 @@ body {
 
 .game__heading {
     margin: 0;
-    margin-bottom: 40px;
     padding: 0;
     font-size: 2rem;
     text-align: center;
@@ -96,8 +95,9 @@ body {
 }
 
 .game__lvl-fieldset {
+    gap: 10px;
     margin: 0;
-    padding: 20px 20px;
+    padding: 0;
     border: none;
 }
 
@@ -122,7 +122,7 @@ body {
 .game__lvl-input:checked+.game__lvl-label {
     background: linear-gradient(135deg, #3e8e41, #558b2f);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
 .game__lvl-input {
@@ -150,4 +150,43 @@ body {
 .game__btn:active {
     transform: scale(0.95);
     background-color: #3e8e41;
+}
+
+.game__keyboard-wrapper {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    max-width: 460px;
+}
+
+.game__keyboard-item {
+    border-radius: 10px;
+    border: none;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    background-color: #555;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.game__keyboard-item:active {
+    background-color: #4caf50;
+    transform: scale(1.1);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.game__keyboard-item:hover {
+    background-color: #4caf50;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.game__keyboard-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
