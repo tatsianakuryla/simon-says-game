@@ -6,8 +6,9 @@ function createElementWithClass(tag, classNames = []) {
 }
 
 function getMain() {
-    const main = createElementWithClass('main');
+    const main = createElementWithClass('main', ['main']);
     const gameSection = createElementWithClass('section', ['game']);
+    gameSection.id = 'game';
     const gameSectionContainer = createElementWithClass('div', [
         'container',
         'game__container',
@@ -31,12 +32,13 @@ function getMain() {
     ]);
     btnWrapper.id = 'game__btn-wrapper';
 
-    gameSectionContainer.append(
-        heading,
-        virtualKeyboard,
-        btnWrapper
-    );
-    main.append(gameSection);
+    gameSectionContainer.append(heading, virtualKeyboard, btnWrapper);
+    const pointerEventsWrapper = createElementWithClass('div', [
+        'pointer-events-none',
+        'hidden',
+    ]);
+    pointerEventsWrapper.id = 'pointer-events-none';
+    main.append(gameSection, pointerEventsWrapper);
 
     return main;
 }
@@ -78,13 +80,13 @@ function getRadioInput(level) {
         'flex',
     ]);
 
+    levelLabel.setAttribute('tabindex', '0');
+
     levelInput.type = 'radio';
     levelInput.name = 'level';
     levelInput.value = level;
     levelInput.id = level;
-    if (level === 'easy') {
-        levelInput.setAttribute('checked', 'true');
-    }
+    if (level === 'easy') levelInput.defaultChecked = true;
 
     levelLabel.setAttribute('for', level);
     levelLabel.innerText = `${level.charAt(0).toUpperCase()}${level.substr(1)}`;
@@ -103,7 +105,7 @@ function getButton(action) {
     ]);
     btn.id = `game__btn_${action}`;
     btn.innerText = `${action.charAt(0).toUpperCase()}${action.substr(1)}`;
-    if(action === 'sequence') {
+    if (action === 'sequence') {
         btn.innerText = 'Repeat the sequence';
     }
     btnWrapper.append(btn);
@@ -314,19 +316,19 @@ function renderStarGameWindow() {
 }
 renderStarGameWindow();
 
-let checkedInput = 'easy';
+let difficulty = 'easy';
 
 Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
     (label) => {
         label.addEventListener('click', () => {
             const labelFor = label.getAttribute('for');
-            checkedInput = labelFor;
+            difficulty = labelFor;
             renderVirtualKeyboard(labelFor);
         });
     }
 );
 
-//start
+//start game visualization
 function makeHidden(element) {
     element.classList.add('hidden');
 }
@@ -335,18 +337,53 @@ function makeVisible(element) {
     element.classList.remove('hidden');
 }
 
+function enableBlock() {
+    const enablingBlock = document.getElementById('pointer-events-none');
+    enablingBlock.classList.remove('hidden');
+    document.body.style.pointerEvents = 'none';
+    document.addEventListener('keydown', preventKeyDown);
+    const repeatBtn = document.getElementById('game__btn_sequence');
+    const nextBtn = document.getElementById('game__btn_next');
+    repeatBtn.disabled = 'true';
+    nextBtn.disabled = 'true';
+}
+
+// Функция для разблокировки
+function disableBlock() {
+    const enablingBlock = document.getElementById('pointer-events-none');
+    enablingBlock.classList.add('hidden');
+    document.body.style.pointerEvents = 'auto';
+    document.removeEventListener('keydown', preventKeyDown);
+    const repeatBtn = document.getElementById('game__btn_sequence');
+    const nextBtn = document.getElementById('game__btn_next');
+    nextBtn.disabled = '';
+    if(playingTimes < 2) {
+        repeatBtn.disabled = '';
+    }
+}
+
+// Функция для предотвращения ввода с клавиатуры
+function preventKeyDown(event) {
+    event.preventDefault();
+    event.stopPropagation();
+}
+
 function makeDifficultyInputsHidden() {
     Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
         (label) => {
+            label.classList.add('pointer-event');
             const labelFor = label.getAttribute('for');
-            if(checkedInput !== labelFor) {
+            if (difficulty !== labelFor) {
                 makeHidden(label);
             }
-        });   
+        }
+    );
 }
 
-let roundCounter = 1;
+let roundCounter = 2;
 let userInputValue = '';
+let playingTimes = 0;
+
 function getRoundCounter(roundCounter) {
     const counter = createElementWithClass('p', ['game__round-counter']);
     counter.innerText = `Round ${roundCounter} of 5`;
@@ -361,6 +398,7 @@ function getUserInput() {
 
     return userInput;
 }
+
 const startButton = document.getElementById('game__btn_start');
 startButton.addEventListener('click', (event) => {
     event.preventDefault();
@@ -368,7 +406,59 @@ startButton.addEventListener('click', (event) => {
     makeHidden(startButton);
     getButton('sequence');
     getButton('next');
-    document.getElementById('game__btn-wrapper').classList.add('game__btn-wrapper_two');
-    document.getElementById('game__btn-wrapper').after(getUserInput(), getRoundCounter(roundCounter));
-    document.getElementById('game__btn_sequence').setAttribute('disabled', '');
-})
+
+    const repeatBtn = document.getElementById('game__btn_sequence');
+    repeatBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        setTimeout(() => {
+            playSequence(sequence);
+        }, 800);
+    });
+
+    document
+        .getElementById('game__btn-wrapper')
+        .classList.add('game__btn-wrapper_two');
+
+    document
+        .getElementById('game__btn-wrapper')
+        .after(getUserInput(), getRoundCounter(roundCounter));
+
+    document.getElementById('game__user-input').focus();
+    getSequence(roundCounter);
+    setTimeout(() => {
+        playSequence(sequence);
+    }, 800);
+});
+
+let sequence = [];
+
+//start game implementation
+function getSequence(roundCounter) {
+    const keyboard = Array.from(
+        document.getElementsByClassName('game__keyboard-item')
+    );
+    for (let i = 0; i < roundCounter * 2; i++) {
+        sequence.push(Math.floor(Math.random() * keyboard.length));
+    }
+    sequence.forEach((input) => console.log(keyboard[input].innerText));
+}
+
+function playSequence(sequence) {
+    enableBlock();
+    const keyboard = Array.from(
+        document.getElementsByClassName('game__keyboard-item')
+    );
+    sequence.forEach((item, index) => {
+        setTimeout(() => {
+            keyboard[item].classList.add('active');
+
+            setTimeout(() => {
+                keyboard[item].classList.remove('active');
+            }, 400);
+        }, 800 * index);
+    });
+    setTimeout(() => {
+        disableBlock();
+    }, 800 * sequence.length);
+    playingTimes++;
+}

@@ -33,7 +33,7 @@
     --text-btn-headings: #fff;
     --subheadings: #333;
     --text: #555;
-    
+
     --keyboard-background: #e0e0e0;
     --key-active: #2196f3;
     --start-btn: #00ffa1;
@@ -44,6 +44,10 @@ html {
     box-sizing: border-box;
 }
 
+.main {
+    position: relative;
+    z-index: 1;
+}
 *,
 ::before,
 ::after {
@@ -115,27 +119,37 @@ body {
     font-weight: bold;
     color: white;
     background: linear-gradient(135deg, #4caf50, #81c784);
-    border: none;
+    border: 3px solid transparent;
+    outline: none;
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-  }
-  
+}
+
+.game__lvl-input {
+    height: 0.01px;
+}
+
 .game__lvl-label:hover {
     background: linear-gradient(135deg, #45a049, #66bb6a);
     transform: scale(1.05);
-  }
-  
+}
+
+.game__lvl-input:focus+.game__lvl-label {
+    border: 3px solid var(--text-btn-headings);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
 .game__lvl-input:checked+.game__lvl-label {
     background: linear-gradient(135deg, #3e8e41, #558b2f);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.1);
 }
 
-.game__lvl-input {
-    height: 0.1px;
-    width: 0.1px;
+.game__lvl-input:focus {
+    outline: none;
 }
 
 .game__btn-wrapper {
@@ -158,12 +172,12 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-  
+
 .game__btn:hover {
     border-color: white;
     transform: scale(1.1);
 }
-  
+
 .game__btn:active {
     transform: scale(0.95);
     background-color: #3e8e41;
@@ -210,6 +224,12 @@ body {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
 }
 
+.active {
+    background-color: #18e91f;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(24, 233, 31, 0.4);
+}
+
 .game__keyboard-item:hover {
     background-color: #4caf50;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
@@ -230,4 +250,18 @@ body {
     margin: 0;
     padding: 5px;
     border-radius: 10px;
+}
+
+.pointer-events-none {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.pointer-event {
+    pointer-events: none;
 }
