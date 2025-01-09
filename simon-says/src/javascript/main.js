@@ -253,13 +253,17 @@ function getKeyboardElement(element) {
 
     return keyboardItem;
 }
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+    return array;
+}
 
 function getKeyboard(array) {
     const lettersWrapper = createElementWithClass('div', [
         'game__keyboard-wrapper',
         'flex',
     ]);
-    array.forEach((element) =>
+    shuffle(array).forEach((element) =>
         lettersWrapper.append(getKeyboardElement(element))
     );
     return lettersWrapper;
