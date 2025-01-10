@@ -1,7 +1,7 @@
-import { createElementWithClass } from './helpers.js';
-import { LEVELS } from './gameDescription.js';
+import { createElementWithClass, visibilityHandler } from './helpers.js';
+import { LEVELS, gameState} from './gameLogic.js';
 import { renderVirtualKeyboard } from './keyboard.js';
-import { gameState } from './gameDescription.js';
+
 
 export function getMain() {
     const main = createElementWithClass('main', ['main']);
@@ -16,11 +16,11 @@ export function getMain() {
     gameSection.append(gameSectionContainer);
 
     const heading = createElementWithClass('h1', ['game__heading']);
-    heading.innerText = 'Simon Says game';
+    heading.textContent = 'Simon Says game';
 
     const lvlHeading = createElementWithClass('h3', ['game__lvl-heading']);
     lvlHeading.id = 'game__lvl-heading';
-    lvlHeading.innerText = 'Select difficulty level:';
+    lvlHeading.textContent = 'Select difficulty level:';
 
     const virtualKeyboard = createElementWithClass('div', [
         'game__virtual-keyboard',
@@ -90,7 +90,7 @@ export function getRadioInput(level) {
     if (level === 'easy') levelInput.defaultChecked = true;
 
     levelLabel.setAttribute('for', level);
-    levelLabel.innerText = `${level.charAt(0).toUpperCase()}${level.substr(1)}`;
+    levelLabel.textContent = `${level.charAt(0).toUpperCase()}${level.substr(1)}`;
     levelLabel.setAttribute('tabindex', '0');
 
     lvlInpWrapper.append(levelInput, levelLabel);
@@ -106,35 +106,41 @@ export function getButton(action) {
         `game__btn_${action}`,
     ]);
     btn.id = `game__btn_${action}`;
-    btn.innerText = `${action.charAt(0).toUpperCase()}${action.substr(1)}`;
+    btn.textContent = `${action.charAt(0).toUpperCase()}${action.substr(1)}`;
     if (action === 'sequence') {
-        btn.innerText = 'Repeat the sequence';
+        btn.textContent = 'Repeat the sequence';
     }
     if (action === 'new') {
-        btn.innerText = 'New game';
+        btn.textContent = 'New game';
     }
     btnWrapper.append(btn);
 
     return btnWrapper;
 }
 
-export function renderStarGameWindow() {
-    document
-        .getElementById('game__container')
-        .append(getLevelSection(), renderVirtualKeyboard(), getButton('start'));
-}
-
 export function getUserInput() {
     const userInput = createElementWithClass('input', ['game__user-input']);
     userInput.id = 'game__user-input';
-    userInput.value = gameState.userInputValue;
+    userInput.setAttribute('readonly', 'true');
+    userInput.value = '';
 
     return userInput;
 }
 
 export function getRoundCounter(roundCounter) {
     const counter = createElementWithClass('p', ['game__round-counter']);
-    counter.innerText = `Round ${roundCounter} of 5`;
-
+    counter.id = 'game__round-counter';
+    counter.textContent = `Round ${roundCounter} of 5`;
     return counter;
+}
+
+export function renderStarGameWindow() {
+    document.body.append(getMain());
+    document.getElementById('game__container').append(getLevelSection(), renderVirtualKeyboard(), getButton('next'), getButton('start'), getButton('sequence'), getButton('new'));
+    document.getElementById('game__btn-wrapper').after(getUserInput(), getRoundCounter(gameState.roundCounter));
+    visibilityHandler.makeHidden(document.getElementById('game__btn_sequence'));
+    visibilityHandler.makeHidden(document.getElementById('game__btn_new'));
+    visibilityHandler.makeHidden(document.getElementById('game__btn_next'));
+    visibilityHandler.makeHidden(document.getElementById('game__round-counter'));
+    visibilityHandler.makeHidden(document.getElementById('game__user-input'));
 }

@@ -155,8 +155,9 @@ export const gameState = {
     difficulty: 'easy',
     roundCounter: 1,
     sequence: [],
-    userInputValue: '',
-    playingTimes: 0,
+    playedKeys: [],
+    playingTimes: 1,
+    userInputKeys: [],
 };
 
 export function getSequence(roundCounter) {
@@ -166,7 +167,8 @@ export function getSequence(roundCounter) {
     for (let i = 0; i < roundCounter * 2; i++) {
         gameState.sequence.push(Math.floor(Math.random() * keyboard.length));
     }
-    gameState.sequence.forEach((input) => console.log(keyboard[input].innerText));
+    (gameState.sequence).forEach(input => gameState.playedKeys.push(keyboard[input].getAttribute('data-key')));
+    console.log(gameState.playedKeys);
 }
 
 export function playSequence(sequence) {
@@ -187,6 +189,5 @@ export function playSequence(sequence) {
         setTimeout(() => {
             userInputHandler.disableBlock();
         }, 600 * sequence.length);
-        gameState.playingTimes++;
-    }, 600);
+    }, 100);
 }

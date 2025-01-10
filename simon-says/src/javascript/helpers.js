@@ -1,4 +1,4 @@
-import { gameState } from './gameDescription.js';
+import { gameState } from './gameLogic.js';
 
 //создание элемента с классами
 export function createElementWithClass(tag, classNames = []) {
@@ -40,11 +40,10 @@ export const userInputHandler = {
         const enablingBlock = document.getElementById('pointer-events-none');
         enablingBlock.classList.add('hidden');
         document.body.style.pointerEvents = 'auto';
-        document.getElementById('game__btn_new').disabled = '';
-        if (gameState.playingTimes < 2) {
+        if(gameState.playingTimes < 2) {
             document.getElementById('game__btn_sequence').disabled = '';
         }
-        document.getElementById('game__user-input').focus();
+        document.getElementById('game__btn_new').disabled = '';
     }
 }
 
@@ -52,4 +51,25 @@ export const userInputHandler = {
 function preventKeyDown(event) {
     event.preventDefault();
     event.stopPropagation();
+}
+
+export function makeDifficultyInputsHidden() {
+    Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
+        (label) => {
+            label.classList.add('pointer-event');
+            const labelFor = label.getAttribute('for');
+            if (gameState.difficulty !== labelFor) {
+                visibilityHandler.makeHidden(label);
+            }
+        }
+    );
+}
+
+export function makeDifficultyInputsVisible() {
+    Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
+        (label) => {
+            label.classList.remove('pointer-event');
+            visibilityHandler.makeVisible(label);
+        }
+    );
 }

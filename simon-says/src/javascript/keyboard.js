@@ -1,11 +1,11 @@
 import { createElementWithClass, shuffle } from './helpers.js';
-import { LETTERS, DIGITS } from './gameDescription.js';
+import { LETTERS, DIGITS, gameState } from './gameLogic.js';
 
 export function getKeyboardElement(element) {
     const keyboardItem = createElementWithClass('button', [
         'game__keyboard-item',
     ]);
-    keyboardItem.innerText = element.key.toUpperCase();
+    keyboardItem.textContent = element.key.toUpperCase();
     keyboardItem.setAttribute('data-key', element.code);
 
     return keyboardItem;
@@ -22,7 +22,7 @@ export function getKeyboard(array) {
     return lettersWrapper;
 }
 
-export function renderVirtualKeyboard(inputChecked = 'easy') {
+export function renderVirtualKeyboard(difficulty = 'easy') {
     const virtualKeyboard = document.getElementById('game__virtual-keyboard');
     virtualKeyboard.innerHTML = '';
 
@@ -31,14 +31,16 @@ export function renderVirtualKeyboard(inputChecked = 'easy') {
         'flex',
     ]);
 
-    if (inputChecked === 'easy')
+    if (difficulty === 'easy')
         virtualKeyboardInner.append(getKeyboard(DIGITS));
-    else if (inputChecked === 'medium')
+    else if (difficulty === 'medium')
         virtualKeyboardInner.append(getKeyboard(LETTERS));
-    else if (inputChecked === 'hard')
+    else if (difficulty === 'hard')
         virtualKeyboardInner.append(getKeyboard([...LETTERS, ...DIGITS]));
 
     virtualKeyboard.append(virtualKeyboardInner);
-
+    // eventListenersForKeyboard();
     return virtualKeyboard;
 }
+
+
