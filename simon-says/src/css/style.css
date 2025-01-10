@@ -82,11 +82,14 @@ body {
     align-items: center;
     margin: 0 auto;
     padding: 20px 40px;
-    max-width: 820px;
-    height: 100vh;
+    max-width: 640px;
     border-radius: 24px;
     background-color: var(--main-background);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+.game {
+    max-height: 680px;
 }
 
 .game__heading {
@@ -110,7 +113,6 @@ body {
     margin: 0;
     padding: 0;
     border: none;
-    width: 100%;
 }
 
 .game__lvl-label {
@@ -129,6 +131,7 @@ body {
 
 .game__lvl-input {
     height: 0.01px;
+    width: 0.01px;
 }
 
 .game__lvl-label:hover {
@@ -137,12 +140,13 @@ body {
 }
 
 .game__lvl-input:focus+.game__lvl-label {
-    border: 3px solid var(--text-btn-headings);
+    border: 3px solid #00ffa1;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.1);
 }
 
 .game__lvl-input:checked+.game__lvl-label {
+    border: 3px solid var(--text-btn-headings);
     background: linear-gradient(135deg, #3e8e41, #558b2f);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.1);
@@ -194,11 +198,11 @@ body {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    max-width: 400px;
+    max-width: 320px;
 }
 
 .game__virtual-keyboard-inner {
-    min-height: 350px;
+    min-height: 200px;
     justify-content: center;
     align-items: center;
 }
@@ -206,9 +210,9 @@ body {
 .game__keyboard-item {
     border-radius: 10px;
     border: none;
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: white;
     text-align: center;
