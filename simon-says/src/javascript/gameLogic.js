@@ -157,7 +157,6 @@ export const gameState = {
     sequence: [],
     playedKeys: [],
     playingTimes: 1,
-    userInputKeys: [],
 };
 
 export function getSequence(roundCounter) {
@@ -189,5 +188,5 @@ export function playSequence(sequence) {
         setTimeout(() => {
             userInputHandler.disableBlock();
         }, 600 * sequence.length);
-    }, 100);
+    }, 200);
 }

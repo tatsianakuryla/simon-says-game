@@ -134,7 +134,7 @@ export function getRoundCounter(roundCounter) {
     return counter;
 }
 
-export function renderStarGameWindow() {
+export function renderStartGameWindow() {
     document.body.append(getMain());
     document.getElementById('game__container').append(getLevelSection(), renderVirtualKeyboard(), getButton('next'), getButton('start'), getButton('sequence'), getButton('new'));
     document.getElementById('game__btn-wrapper').after(getUserInput(), getRoundCounter(gameState.roundCounter));

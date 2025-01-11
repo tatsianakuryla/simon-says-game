@@ -182,6 +182,11 @@ body {
     transform: scale(1.1);
 }
 
+.game__btn:focus {
+    border-color: white;
+    transform: scale(1.1);
+}
+
 .game__btn:active {
     transform: scale(0.95);
     background-color: #3e8e41;
