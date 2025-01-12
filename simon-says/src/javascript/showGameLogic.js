@@ -1,24 +1,23 @@
 import {
     visibilityHandler,
     userInputHandler,
-    disableKeyboard,
-    enableKeyboard,
     buttonHighlighter,
 } from './helpers.js';
 import { gameState } from './gameLogic.js';
 import { userInput, repeatBtn, nextBtn, newGameBtn } from './main.js';
+import { keyboardState } from './keyboardState.js';
 
 function showRoundLost() {
     setTimeout(() => {
         userInput.value = 'You are mistaken!';
-    });
-    disableKeyboard();
+    }, 300);
+    keyboardState.disableKeyboard();
 }
 
 function showRoundWon() {
     setTimeout(() => {
         userInput.value = 'Good game!';
-    });
+    }, 300);
     visibilityHandler.makeHidden(repeatBtn);
     visibilityHandler.makeVisible(nextBtn);
     if (gameState.isLastRound()) {
@@ -27,7 +26,7 @@ function showRoundWon() {
     } else {
         nextBtn.focus();
     }
-    disableKeyboard();
+    keyboardState.disableKeyboard();
 }
 
 function showRoundRepeat() {
@@ -55,6 +54,11 @@ export function playNextRound() {
 }
 
 function keyboardClickHandler(userInputValue) {
+
+    if(keyboardState.isKeyboardDisabled) {
+        return;
+    }
+
     gameState.makeTurn(userInputValue);
 
     userInput.value = gameState.playerInput.join('');
@@ -85,7 +89,7 @@ export function playSequence(sequence) {
         });
         setTimeout(() => {
             userInputHandler.disableBlock();
-            enableKeyboard();
+            keyboardState.enableKeyboard();
         }, 600 * sequence.length);
     }, 300);
 }
@@ -105,6 +109,9 @@ export function eventListenersForKeyboard() {
 export function documentKeydownHandler() {
     document.addEventListener('keydown', (event) => {
         event.preventDefault();
+        if(keyboardState.isKeyboardDisabled) {
+            return;
+        }
         const keyboard = Array.from(
             document.getElementsByClassName('game__keyboard-item')
         );
