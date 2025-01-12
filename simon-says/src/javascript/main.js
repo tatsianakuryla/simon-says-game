@@ -3,12 +3,17 @@ import {
     makeDifficultyInputsHidden,
     makeDifficultyInputsVisible,
 } from './helpers.js';
+import { renderStartGameWindow, renderVirtualKeyboard } from './dom.js';
 import {
-    renderStartGameWindow,
-} from './dom.js';
-import { renderVirtualKeyboard, eventListenersForKeyboard, documentKeydownHandler } from './keyboard.js';
-import { gameState, playSequence, getSequence } from './gameLogic.js';
+    eventListenersForKeyboard,
+    documentKeydownHandler,
+    playSequence,
+    repeatRound,
+    playNextRound,
+} from './keyboardLogic.js';
+import { gameState } from './gameLogic.js';
 
+gameState.newGame();
 renderStartGameWindow();
 
 Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
@@ -16,7 +21,8 @@ Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
         label.addEventListener('click', () => {
             const labelFor = label.getAttribute('for');
             gameState.difficulty = labelFor;
-            renderVirtualKeyboard(labelFor);
+            gameState.newGame();
+            renderVirtualKeyboard();
         });
     }
 );
@@ -24,18 +30,18 @@ Array.from(document.getElementsByClassName('game__lvl-label')).forEach(
 export const repeatBtn = document.getElementById('game__btn_sequence');
 export const userInput = document.getElementById('game__user-input');
 const roundCounterDiv = document.getElementById('game__round-counter');
-const newGameBtn = document.getElementById('game__btn_new');
+export const newGameBtn = document.getElementById('game__btn_new');
 const startBtn = document.getElementById('game__btn_start');
 export const nextBtn = document.getElementById('game__btn_next');
 const btnWrapper = document.getElementById('game__btn-wrapper');
 
-startBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+startBtn.addEventListener('click', () => {
     makeDifficultyInputsHidden();
     visibilityHandler.makeHidden(startBtn);
-    document.getElementById('game__lvl-heading').textContent = 'Difficulty level:';
-
+    document.getElementById('game__lvl-heading').textContent =
+        'Difficulty level:';
     btnWrapper.classList.add('game__btn-wrapper_two');
+
     visibilityHandler.makeVisible(repeatBtn);
     visibilityHandler.makeVisible(newGameBtn);
     visibilityHandler.makeVisible(roundCounterDiv);
@@ -44,14 +50,12 @@ startBtn.addEventListener('click', (event) => {
 
     eventListenersForKeyboard();
     documentKeydownHandler();
-    getSequence(gameState.roundCounter);
     playSequence(gameState.sequence);
 });
 
-newGameBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+newGameBtn.addEventListener('click', () => {
     makeDifficultyInputsVisible();
-    renderVirtualKeyboard(gameState.difficulty);
+    renderVirtualKeyboard();
     visibilityHandler.makeHidden(newGameBtn);
     repeatBtn.disabled = '';
     nextBtn.disabled = '';
@@ -61,36 +65,27 @@ newGameBtn.addEventListener('click', (event) => {
     visibilityHandler.makeVisible(startBtn);
     visibilityHandler.makeHidden(nextBtn);
     btnWrapper.classList.add('game__btn-wrapper_two');
-    gameState.roundCounter = 1;
-    gameState.playingTimes = 1;
-    gameState.sequence = [];
-    gameState.playedKeys = [];
+
+    gameState.newGame();
+    renderVirtualKeyboard();
     userInput.value = '';
-    roundCounterDiv.textContent = `Round ${gameState.roundCounter} of 5`;
+
+    roundCounterDiv.textContent = `Round ${gameState.roundCounter} of ${gameState.roundCount}`;
 });
 
-repeatBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+repeatBtn.addEventListener('click', () => {
     userInput.value = '';
-    gameState.playingTimes++;
-    Array.from(document.getElementsByClassName('game__keyboard-item')).forEach(btn => btn.style.pointerEvents = '');
-    playSequence(gameState.sequence);
+    gameState.repeatRound();
+    repeatRound();
 });
 
-nextBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+nextBtn.addEventListener('click', () => {
     visibilityHandler.makeVisible(repeatBtn);
     visibilityHandler.makeHidden(nextBtn);
-    gameState.roundCounter++;
-    gameState.playingTimes = 1;
-    gameState.sequence = [];
-    gameState.playedKeys = [];
-    roundCounterDiv.textContent = `Round ${gameState.roundCounter} of 5`;
-    getSequence(gameState.roundCounter);
-    playSequence(gameState.sequence);
     userInput.value = '';
-    Array.from(document.getElementsByClassName('game__keyboard-item')).forEach(btn => btn.style.pointerEvents = '');
-    if(gameState.roundCounter >= 5) {
-        nextBtn.disabled = 'true';
-    }
+
+    gameState.nextRound();
+    playNextRound();
+
+    roundCounterDiv.textContent = `Round ${gameState.roundCounter} of ${gameState.roundCount}`;
 });

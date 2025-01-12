@@ -1,192 +1,89 @@
-import { userInputHandler } from './helpers.js';
-export const DIGITS = [
-    {
-        key: '1',
-        code: 'Digit1',
-    },
-    {
-        key: '2',
-        code: 'Digit2',
-    },
-    {
-        key: '3',
-        code: 'Digit3',
-    },
-    {
-        key: '4',
-        code: 'Digit4',
-    },
-    {
-        key: '5',
-        code: 'Digit5',
-    },
-    {
-        key: '6',
-        code: 'Digit6',
-    },
-    {
-        key: '7',
-        code: 'Digit7',
-    },
-    {
-        key: '8',
-        code: 'Digit8',
-    },
-    {
-        key: '9',
-        code: 'Digit9',
-    },
-    {
-        key: '0',
-        code: 'Digit0',
-    },
-];
+import { shuffle } from './helpers.js';
 
-export const LETTERS = [
-    {
-        key: 'q',
-        code: 'KeyQ',
-    },
-    {
-        key: 'w',
-        code: 'KeyW',
-    },
-    {
-        key: 'e',
-        code: 'KeyE',
-    },
-    {
-        key: 'r',
-        code: 'KeyR',
-    },
-    {
-        key: 't',
-        code: 'KeyT',
-    },
-    {
-        key: 'y',
-        code: 'KeyY',
-    },
-    {
-        key: 'u',
-        code: 'KeyU',
-    },
-    {
-        key: 'i',
-        code: 'KeyI',
-    },
-    {
-        key: 'o',
-        code: 'KeyO',
-    },
-    {
-        key: 'p',
-        code: 'KeyP',
-    },
-    {
-        key: 'a',
-        code: 'KeyA',
-    },
-    {
-        key: 's',
-        code: 'KeyS',
-    },
-    {
-        key: 'd',
-        code: 'KeyD',
-    },
-    {
-        key: 'f',
-        code: 'KeyF',
-    },
-    {
-        key: 'g',
-        code: 'KeyG',
-    },
-    {
-        key: 'h',
-        code: 'KeyH',
-    },
-    {
-        key: 'j',
-        code: 'KeyJ',
-    },
-    {
-        key: 'k',
-        code: 'KeyK',
-    },
-    {
-        key: 'l',
-        code: 'KeyL',
-    },
-    {
-        key: 'z',
-        code: 'KeyZ',
-    },
-    {
-        key: 'x',
-        code: 'KeyX',
-    },
-    {
-        key: 'c',
-        code: 'KeyC',
-    },
-    {
-        key: 'v',
-        code: 'KeyV',
-    },
-    {
-        key: 'b',
-        code: 'KeyB',
-    },
-    {
-        key: 'n',
-        code: 'KeyN',
-    },
-    {
-        key: 'm',
-        code: 'KeyM',
-    },
-];
-
+export const DIGITS = '1234567890'.split('');
+export const LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('');
 export const LEVELS = ['easy', 'medium', 'hard'];
 
 export const gameState = {
     difficulty: 'easy',
     roundCounter: 1,
+    roundCount: 5,
     sequence: [],
-    playedKeys: [],
-    playingTimes: 1,
-};
+    roundRepeatsCount: 1,
+    playerInput: [],
+    keyboard: [],
 
-export function getSequence(roundCounter) {
-    const keyboard = Array.from(
-        document.getElementsByClassName('game__keyboard-item')
-    );
-    for (let i = 0; i < roundCounter * 2; i++) {
-        gameState.sequence.push(Math.floor(Math.random() * keyboard.length));
-    }
-    (gameState.sequence).forEach(input => gameState.playedKeys.push(keyboard[input].getAttribute('data-key')));
-    console.log(gameState.playedKeys);
-}
+    getCharactersSet() {
+        if (this.difficulty === 'easy') {
+            return DIGITS;
+        }
+        if (this.difficulty === 'medium') {
+            return LETTERS;
+        }
+        if (this.difficulty === 'hard') {
+            return [...LETTERS, ...DIGITS];
+        }
+    },
 
-export function playSequence(sequence) {
-    setTimeout(() => {
-        userInputHandler.enableBlock();
-        const keyboard = Array.from(
-            document.getElementsByClassName('game__keyboard-item')
+    initKeyboard() {
+        this.keyboard = shuffle(this.getCharactersSet());
+    },
+
+    initSequence() {
+        this.sequence = [];
+        for (let i = 0; i < this.roundCounter * 2; i++) {
+            let index = Math.floor(Math.random() * this.keyboard.length);
+            this.sequence.push(this.keyboard[index]);
+        }
+        console.log(gameState.sequence);
+    },
+
+    newGame() {
+        this.initKeyboard();
+        this.initSequence();
+        this.roundCounter = 1;
+        this.roundRepeatsCount = 1;
+        this.playerInput = [];
+    },
+
+    isRoundWon() {
+        return (
+            JSON.stringify(this.sequence) === JSON.stringify(this.playerInput)
         );
-        sequence.forEach((item, index) => {
-            setTimeout(() => {
-                keyboard[item].classList.add('active');
+    },
 
-                setTimeout(() => {
-                    keyboard[item].classList.remove('active');
-                }, 400);
-            }, 600 * index);
-        });
-        setTimeout(() => {
-            userInputHandler.disableBlock();
-        }, 600 * sequence.length);
-    }, 200);
-}
+    isTurnWon() {
+        return (
+            this.playerInput[this.playerInput.length - 1] ===
+            this.sequence[this.playerInput.length - 1]
+        );
+    },
+
+    isTurnLost() {
+        return !this.isTurnWon();
+    },
+
+    makeTurn(value) {
+        this.playerInput.push(value);
+    },
+
+    isRoundRepeatAvailable() {
+        return this.roundRepeatsCount > 0;
+    },
+
+    isLastRound() {
+        return this.roundCounter >= this.roundCount;
+    },
+
+    repeatRound() {
+        this.roundRepeatsCount--;
+        this.playerInput = [];
+    },
+
+    nextRound() {
+        this.roundCounter++;
+        this.initSequence();
+        this.roundRepeatsCount = 1;
+        this.playerInput = [];
+    }
+};

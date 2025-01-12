@@ -1,4 +1,5 @@
 import { gameState } from './gameLogic.js';
+import { newGameBtn, repeatBtn } from './main.js';
 
 //создание элемента с классами
 export function createElementWithClass(tag, classNames = []) {
@@ -19,11 +20,11 @@ export const visibilityHandler = {
     makeHidden(element) {
         element.classList.add('hidden');
     },
-    
+
     makeVisible(element) {
         element.classList.remove('hidden');
-    }
-}
+    },
+};
 
 export const userInputHandler = {
     enableBlock() {
@@ -31,24 +32,22 @@ export const userInputHandler = {
         const enablingBlock = document.getElementById('pointer-events-none');
         enablingBlock.classList.remove('hidden');
         document.body.style.pointerEvents = 'none';
-        document.getElementById('game__btn_sequence').disabled = 'true';
-        document.getElementById('game__btn_new').disabled = 'true';
+        repeatBtn.disabled = 'true';
+        newGameBtn.disabled = 'true';
     },
-    
+
     disableBlock() {
         document.removeEventListener('keydown', preventKeyDown);
         const enablingBlock = document.getElementById('pointer-events-none');
         enablingBlock.classList.add('hidden');
         document.body.style.pointerEvents = 'auto';
-        if(gameState.playingTimes < 2) {
-            document.getElementById('game__btn_sequence').disabled = '';
-        }
-        document.getElementById('game__btn_new').disabled = '';
-    }
-}
+        repeatBtn.disabled = ! gameState.isRoundRepeatAvailable();
+        newGameBtn.disabled = '';
+    },
+};
 
 // Функция для предотвращения ввода с клавиатуры
-function preventKeyDown(event) {
+export function preventKeyDown(event) {
     event.preventDefault();
     event.stopPropagation();
 }

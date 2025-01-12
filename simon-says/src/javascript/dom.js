@@ -1,6 +1,5 @@
 import { createElementWithClass, visibilityHandler } from './helpers.js';
 import { LEVELS, gameState} from './gameLogic.js';
-import { renderVirtualKeyboard } from './keyboard.js';
 
 
 export function getMain() {
@@ -130,8 +129,42 @@ export function getUserInput() {
 export function getRoundCounter(roundCounter) {
     const counter = createElementWithClass('p', ['game__round-counter']);
     counter.id = 'game__round-counter';
-    counter.textContent = `Round ${roundCounter} of 5`;
+    counter.textContent = `Round ${roundCounter} of ${gameState.roundCount}`;
     return counter;
+}
+
+export function getKeyboardElement(element) {
+    const keyboardItem = createElementWithClass('button', [
+        'game__keyboard-item',
+    ]);
+    keyboardItem.textContent = element.toUpperCase();
+    keyboardItem.setAttribute('data-key', element);
+
+    return keyboardItem;
+}
+
+export function getKeyboard(array) {
+    const lettersWrapper = createElementWithClass('div', [
+        'game__keyboard-wrapper',
+        'flex',
+    ]);
+    array.forEach((element) =>
+        lettersWrapper.append(getKeyboardElement(element))
+    );
+    return lettersWrapper;
+}
+
+export function renderVirtualKeyboard() {
+    const virtualKeyboard = document.getElementById('game__virtual-keyboard');
+    virtualKeyboard.innerHTML = '';
+
+    const virtualKeyboardInner = createElementWithClass('div', [
+        'game__virtual-keyboard-inner',
+        'flex',
+    ]);
+    virtualKeyboardInner.append(getKeyboard(gameState.keyboard));
+    virtualKeyboard.append(virtualKeyboardInner);
+    return virtualKeyboard;
 }
 
 export function renderStartGameWindow() {
