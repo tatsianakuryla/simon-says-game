@@ -2,7 +2,7 @@ import { createElementWithClass, visibilityHandler } from './helpers.js';
 import { LEVELS, gameState } from './gameState.js';
 
 export function getMain() {
-    const main = createElementWithClass('main', ['main']);
+    const main = createElementWithClass('main', ['main', 'flex']);
     const gameSection = createElementWithClass('section', ['game']);
     gameSection.id = 'game';
     const gameSectionContainer = createElementWithClass('div', [

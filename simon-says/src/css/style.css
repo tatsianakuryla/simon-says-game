@@ -46,6 +46,9 @@ html {
 
 .main {
     position: relative;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
     z-index: 1;
 }
 *,
@@ -184,6 +187,7 @@ body {
 
 .game__btn:focus {
     border-color: white;
+    outline: none;
     transform: scale(1.1);
 }
 

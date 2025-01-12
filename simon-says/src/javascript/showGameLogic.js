@@ -17,17 +17,18 @@ export function showRoundLost() {
 export function showRoundWon() {
     if (gameState.isLastRound()) {
         setTimeout(() => {
-            userInput.value = 'You are a winner!';
+            userInput.value = 'You won the game!';
+            repeatBtn.disabled = 'true';
+            newGameBtn.focus();
         }, 600);
-        repeatBtn.disabled = 'true';
-        newGameBtn.focus();
+
     } else {
         setTimeout(() => {
-            userInput.value = 'Good game!';
+            userInput.value = 'Good game! Next!';
+            visibilityHandler.makeHidden(repeatBtn);
+            visibilityHandler.makeVisible(nextBtn);
+            nextBtn.focus();
         }, 600);
-        visibilityHandler.makeHidden(repeatBtn);
-        visibilityHandler.makeVisible(nextBtn);
-        nextBtn.focus();
     }
     keyboardState.disableKeyboard();
 }

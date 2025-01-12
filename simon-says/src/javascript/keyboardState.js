@@ -10,13 +10,11 @@ import {
 
 export const keyboardState = {
     getKeyboard() {
-        const keyboard = Array.from(
-            document.getElementsByClassName('game__keyboard-item')
-        );
-        return keyboard;
+        return Array.from(document.getElementsByClassName('game__keyboard-item'));
     },
 
     isKeyboardDisabled: true,
+    isKeyProcessing: false,
 
     disableKeyboard() {
         this.isKeyboardDisabled = true;
@@ -33,16 +31,16 @@ export const keyboardState = {
     },
 
     keyboardClickHandler(userInputValue) {
-        if (this.isKeyboardDisabled) {
+        if (this.isKeyboardDisabled || this.isKeyProcessing) {
             return;
         }
 
+        this.isKeyProcessing = true;
         gameState.makeTurn(userInputValue);
-
         userInput.value = gameState.playerInput.join('');
         if (gameState.isRoundWon()) {
             showRoundWon();
-        }
+        };
 
         if (gameState.isTurnLost()) {
             showRoundLost();
@@ -51,7 +49,10 @@ export const keyboardState = {
             } else {
                 showGameLost();
             }
-        }
+        };
+        setTimeout(() => {
+            this.isKeyProcessing = false;
+        }, 100);
     },
 
     eventListenersForKeyboard() {
@@ -67,7 +68,7 @@ export const keyboardState = {
     keyboardKeydownHandler() {
         document.addEventListener('keydown', (event) => {
             event.preventDefault();
-            if (this.isKeyboardDisabled) {
+            if (this.isKeyboardDisabled || this.isKeyProcessing) {
                 return;
             }
             this.getKeyboard().forEach((button) => {

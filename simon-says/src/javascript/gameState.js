@@ -7,7 +7,7 @@ export const LEVELS = ['easy', 'medium', 'hard'];
 export const gameState = {
     difficulty: 'easy',
     roundCounter: 1,
-    roundCount: 2,
+    roundCount: 5,
     sequence: [],
     roundRepeatsCount: 1,
     playerInput: [],
