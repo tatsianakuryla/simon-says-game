@@ -10,7 +10,7 @@ import {
     playSequence,
     repeatRound,
     playNextRound,
-} from './keyboardLogic.js';
+} from './showGameLogic.js';
 import { gameState } from './gameLogic.js';
 
 gameState.newGame();

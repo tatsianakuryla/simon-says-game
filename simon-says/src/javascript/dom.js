@@ -137,6 +137,7 @@ export function getKeyboardElement(element) {
     const keyboardItem = createElementWithClass('button', [
         'game__keyboard-item',
     ]);
+    keyboardItem.style.pointerEvents = 'none';
     keyboardItem.textContent = element.toUpperCase();
     keyboardItem.setAttribute('data-key', element);
 

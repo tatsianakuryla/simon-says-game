@@ -39,7 +39,6 @@ function showGameLost() {
 
 export function repeatRound() {
     playSequence(gameState.sequence);
-    enableKeyboard();
     if (!gameState.isRoundRepeatAvailable()) {
         disableRoundRepeat();
     }
@@ -47,7 +46,6 @@ export function repeatRound() {
 
 export function playNextRound() {
     playSequence(gameState.sequence);
-    enableKeyboard();
 }
 
 function disableKeyboard() {
@@ -100,6 +98,7 @@ export function playSequence(sequence) {
         });
         setTimeout(() => {
             userInputHandler.disableBlock();
+            enableKeyboard();
         }, 600 * sequence.length);
     }, 300);
 }
@@ -123,7 +122,7 @@ export function documentKeydownHandler() {
             document.getElementsByClassName('game__keyboard-item')
         );
         keyboard.forEach((button) => {
-            if (button.getAttribute('data-key') === event.key.toUpperCase()) {
+            if (button.getAttribute('data-key') === event.key.toLowerCase()) {
                 button.click();
             }
         });

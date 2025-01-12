@@ -39,11 +39,11 @@ export const gameState = {
     },
 
     newGame() {
-        this.initKeyboard();
-        this.initSequence();
-        this.roundCounter = 1;
         this.roundRepeatsCount = 1;
         this.playerInput = [];
+        this.roundCounter = 1;
+        this.initKeyboard();
+        this.initSequence();
     },
 
     isRoundWon() {
