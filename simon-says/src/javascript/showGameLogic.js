@@ -1,18 +1,24 @@
 import {
     visibilityHandler,
     userInputHandler,
-    preventKeyDown,
+    disableKeyboard,
+    enableKeyboard,
+    buttonHighlighter,
 } from './helpers.js';
 import { gameState } from './gameLogic.js';
 import { userInput, repeatBtn, nextBtn, newGameBtn } from './main.js';
 
 function showRoundLost() {
-    userInput.value = 'You are mistaken!';
+    setTimeout(() => {
+        userInput.value = 'You are mistaken!';
+    });
     disableKeyboard();
 }
 
 function showRoundWon() {
-    userInput.value = 'Good game!';
+    setTimeout(() => {
+        userInput.value = 'Good game!';
+    });
     visibilityHandler.makeHidden(repeatBtn);
     visibilityHandler.makeVisible(nextBtn);
     if (gameState.isLastRound()) {
@@ -48,22 +54,6 @@ export function playNextRound() {
     playSequence(gameState.sequence);
 }
 
-function disableKeyboard() {
-    const keyboard = Array.from(
-        document.getElementsByClassName('game__keyboard-item')
-    );
-    keyboard.forEach((btn) => (btn.style.pointerEvents = 'none'));
-    document.addEventListener('keydown', preventKeyDown);
-}
-
-function enableKeyboard() {
-    const keyboard = Array.from(
-        document.getElementsByClassName('game__keyboard-item')
-    );
-    keyboard.forEach((btn) => (btn.style.pointerEvents = ''));
-    document.removeEventListener('keydown', preventKeyDown);
-}
-
 function keyboardClickHandler(userInputValue) {
     gameState.makeTurn(userInputValue);
 
@@ -90,10 +80,7 @@ export function playSequence(sequence) {
                 const foundButton = document.querySelector(
                     `[data-key="${item}"]`
                 );
-                foundButton.classList.add('active');
-                setTimeout(() => {
-                    foundButton.classList.remove('active');
-                }, 400);
+                buttonHighlighter(foundButton);
             }, 600 * index);
         });
         setTimeout(() => {
@@ -124,6 +111,7 @@ export function documentKeydownHandler() {
         keyboard.forEach((button) => {
             if (button.getAttribute('data-key') === event.key.toLowerCase()) {
                 button.click();
+                buttonHighlighter(button);
             }
         });
     });
