@@ -15,15 +15,18 @@ export function showRoundLost() {
 }
 
 export function showRoundWon() {
-    setTimeout(() => {
-        userInput.value = 'Good game!';
-    }, 600);
-    visibilityHandler.makeHidden(repeatBtn);
-    visibilityHandler.makeVisible(nextBtn);
     if (gameState.isLastRound()) {
-        nextBtn.disabled = 'true';
+        setTimeout(() => {
+            userInput.value = 'You are a winner!';
+        }, 600);
+        repeatBtn.disabled = 'true';
         newGameBtn.focus();
     } else {
+        setTimeout(() => {
+            userInput.value = 'Good game!';
+        }, 600);
+        visibilityHandler.makeHidden(repeatBtn);
+        visibilityHandler.makeVisible(nextBtn);
         nextBtn.focus();
     }
     keyboardState.disableKeyboard();
