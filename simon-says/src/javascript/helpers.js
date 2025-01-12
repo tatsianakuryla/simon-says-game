@@ -1,4 +1,4 @@
-import { gameState } from './gameLogic.js';
+import { gameState } from './gameState.js';
 import { newGameBtn, repeatBtn } from './main.js';
 
 //создание элемента с классами
@@ -72,26 +72,6 @@ export function makeDifficultyInputsVisible() {
         }
     );
 }
-
-// export function disableKeyboard() {
-//     const keyboard = Array.from(
-//         document.getElementsByClassName('game__keyboard-item')
-//     );
-//     keyboard.forEach((btn) => {
-//         btn.style.pointerEvents = 'none';
-//     });
-//     // document.addEventListener('keydown', preventKeyDown);
-// }
-
-// export function enableKeyboard() {
-//     const keyboard = Array.from(
-//         document.getElementsByClassName('game__keyboard-item')
-//     );
-//     keyboard.forEach((btn) => {
-//         btn.style.pointerEvents = '';
-//     });
-//     // document.removeEventListener('keydown', preventKeyDown);
-// }
 
 export function buttonHighlighter(btn) {
     btn.classList.add('active');

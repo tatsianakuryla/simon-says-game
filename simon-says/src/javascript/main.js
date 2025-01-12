@@ -4,14 +4,13 @@ import {
     makeDifficultyInputsVisible,
 } from './helpers.js';
 import { renderStartGameWindow, renderVirtualKeyboard } from './dom.js';
+import { gameState } from './gameState.js';
 import {
-    eventListenersForKeyboard,
-    documentKeydownHandler,
     playSequence,
     repeatRound,
     playNextRound,
 } from './showGameLogic.js';
-import { gameState } from './gameLogic.js';
+import { keyboardState } from './keyboardState.js';
 
 gameState.newGame();
 renderStartGameWindow();
@@ -48,8 +47,8 @@ startBtn.addEventListener('click', () => {
     visibilityHandler.makeVisible(userInput);
     visibilityHandler.makeHidden(startBtn);
 
-    eventListenersForKeyboard();
-    documentKeydownHandler();
+    keyboardState.eventListenersForKeyboard();
+    keyboardState.keyboardKeydownHandler();
     playSequence(gameState.sequence);
 });
 

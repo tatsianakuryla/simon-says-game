@@ -3,21 +3,21 @@ import {
     userInputHandler,
     buttonHighlighter,
 } from './helpers.js';
-import { gameState } from './gameLogic.js';
+import { gameState } from './gameState.js';
 import { userInput, repeatBtn, nextBtn, newGameBtn } from './main.js';
 import { keyboardState } from './keyboardState.js';
 
-function showRoundLost() {
+export function showRoundLost() {
     setTimeout(() => {
         userInput.value = 'You are mistaken!';
-    }, 300);
+    }, 600);
     keyboardState.disableKeyboard();
 }
 
-function showRoundWon() {
+export function showRoundWon() {
     setTimeout(() => {
         userInput.value = 'Good game!';
-    }, 300);
+    }, 600);
     visibilityHandler.makeHidden(repeatBtn);
     visibilityHandler.makeVisible(nextBtn);
     if (gameState.isLastRound()) {
@@ -29,7 +29,7 @@ function showRoundWon() {
     keyboardState.disableKeyboard();
 }
 
-function showRoundRepeat() {
+export function showRoundRepeat() {
     repeatBtn.focus();
 }
 
@@ -38,7 +38,7 @@ function disableRoundRepeat() {
     newGameBtn.focus();
 }
 
-function showGameLost() {
+export function showGameLost() {
     newGameBtn.focus();
 }
 
@@ -51,29 +51,6 @@ export function repeatRound() {
 
 export function playNextRound() {
     playSequence(gameState.sequence);
-}
-
-function keyboardClickHandler(userInputValue) {
-
-    if(keyboardState.isKeyboardDisabled) {
-        return;
-    }
-
-    gameState.makeTurn(userInputValue);
-
-    userInput.value = gameState.playerInput.join('');
-    if (gameState.isRoundWon()) {
-        showRoundWon();
-    }
-
-    if (gameState.isTurnLost()) {
-        showRoundLost();
-        if (gameState.isRoundRepeatAvailable()) {
-            showRoundRepeat();
-        } else {
-            showGameLost();
-        }
-    }
 }
 
 export function playSequence(sequence) {
@@ -92,34 +69,4 @@ export function playSequence(sequence) {
             keyboardState.enableKeyboard();
         }, 600 * sequence.length);
     }, 300);
-}
-
-export function eventListenersForKeyboard() {
-    const keyboard = Array.from(
-        document.getElementsByClassName('game__keyboard-item')
-    );
-
-    keyboard.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            keyboardClickHandler(event.target.getAttribute('data-key'));
-        });
-    });
-}
-
-export function documentKeydownHandler() {
-    document.addEventListener('keydown', (event) => {
-        event.preventDefault();
-        if(keyboardState.isKeyboardDisabled) {
-            return;
-        }
-        const keyboard = Array.from(
-            document.getElementsByClassName('game__keyboard-item')
-        );
-        keyboard.forEach((button) => {
-            if (button.getAttribute('data-key') === event.key.toLowerCase()) {
-                button.click();
-                buttonHighlighter(button);
-            }
-        });
-    });
 }

@@ -1,6 +1,5 @@
 import { createElementWithClass, visibilityHandler } from './helpers.js';
-import { LEVELS, gameState} from './gameLogic.js';
-
+import { LEVELS, gameState } from './gameState.js';
 
 export function getMain() {
     const main = createElementWithClass('main', ['main']);
@@ -170,11 +169,24 @@ export function renderVirtualKeyboard() {
 
 export function renderStartGameWindow() {
     document.body.append(getMain());
-    document.getElementById('game__container').append(getLevelSection(), renderVirtualKeyboard(), getButton('next'), getButton('start'), getButton('sequence'), getButton('new'));
-    document.getElementById('game__btn-wrapper').after(getUserInput(), getRoundCounter(gameState.roundCounter));
+    document
+        .getElementById('game__container')
+        .append(
+            getLevelSection(),
+            renderVirtualKeyboard(),
+            getButton('next'),
+            getButton('start'),
+            getButton('sequence'),
+            getButton('new')
+        );
+    document
+        .getElementById('game__btn-wrapper')
+        .after(getUserInput(), getRoundCounter(gameState.roundCounter));
     visibilityHandler.makeHidden(document.getElementById('game__btn_sequence'));
     visibilityHandler.makeHidden(document.getElementById('game__btn_new'));
     visibilityHandler.makeHidden(document.getElementById('game__btn_next'));
-    visibilityHandler.makeHidden(document.getElementById('game__round-counter'));
+    visibilityHandler.makeHidden(
+        document.getElementById('game__round-counter')
+    );
     visibilityHandler.makeHidden(document.getElementById('game__user-input'));
 }
