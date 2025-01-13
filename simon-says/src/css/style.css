@@ -86,6 +86,7 @@ body {
     margin: 0 auto;
     padding: 20px 40px;
     max-width: 640px;
+    min-height: 649px;
     border-radius: 24px;
     background-color: var(--main-background);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
