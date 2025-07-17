@@ -1,0 +1,42 @@
+@media(max-width: 680px) {
+    .container {
+        max-width: 480px;
+    }
+
+    .game__heading {
+        margin-bottom: 0;
+    }
+
+    .game__lvl-fieldset {
+        gap: 0;
+    }
+
+    .game__keyboard-wrapper {
+        gap: 7px;
+    }
+}
+
+@media(max-width: 480px) {
+    .container {
+        padding: 20px 10px;
+        max-width: 360px;
+    }
+
+    .game__heading {
+        font-size: 1rem;
+    }
+
+    .game__keyboard-wrapper {
+        gap: 7px;
+    }
+
+    .game__btn {
+        padding: 15px 15px;
+        font-size: 0.9rem;
+    }
+
+    .game__lvl-label {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+}
